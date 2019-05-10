@@ -2,9 +2,12 @@ FROM rocker/tidyverse:latest
 LABEL maintainer="lorenzo.gaborini@gmail.com"
 
 ## tidyvercpp
-## rocker/tidyverse:latest with devtools, tidyverse, Rcpp, RcppArmadillo and dependencies
-##
-## Base Dockerfile from rocker/tidyverse
+#
+# From rocker/tidyverse:
+# latest with rstudio, devtools, tidyverse, Rcpp, RcppArmadillo and dependencies
+#
+# Base Dockerfile from rocker/tidyverse
+#
 
 # RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 #   libxml2-dev \
@@ -25,15 +28,9 @@ LABEL maintainer="lorenzo.gaborini@gmail.com"
 #     ggplot2 \
 #     devtools \
 
-
-RUN install2.r --error \
+RUN apt install -y libgsl-dev \
+    && install2.r --error \
     remotes \
     Rcpp \
     RcppArmadillo
 
-## Notes: Above install2.r uses --deps TRUE to get Suggests dependencies as well,
-## dplyr and ggplot are already part of tidyverse, but listed explicitly to get their (many) suggested dependencies.
-## In addition to the the title 'tidyverse' packages, devtools is included for package development.
-## remotes included for installation from heterogenous sources including git/svn, local, url, and specific cran versions
-
-RUN apt install -y libgsl-dev
